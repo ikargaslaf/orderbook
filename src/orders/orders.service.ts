@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Order } from './orders.entity';
+import { OrderItem } from './orders-item.entity';
 import { Repository } from 'typeorm';
 import { OrderCreateDto } from 'src/dto/order-create.dto';
 import { OrderMatchedDto } from 'src/dto/order-matched.dto';
@@ -9,15 +9,15 @@ import { OrderMatchedDto } from 'src/dto/order-matched.dto';
 export class OrdersService {
 
     constructor(
-        @InjectRepository(Order)
-        private orderRepository: Repository<Order>
+        @InjectRepository(OrderItem)
+        private orderRepository: Repository<OrderItem>
     ) {}
 
-    async create(order: OrderCreateDto): Promise<Order> {
+    async create(order: OrderCreateDto): Promise<OrderItem> {
         return this.orderRepository.save(order)
     }
 
-    async match(order: OrderMatchedDto): Promise<Order>{
+    async match(order: OrderMatchedDto): Promise<OrderItem>{
 
         const matchingOrder = await this.orderRepository.findOne({
             where: {
@@ -25,15 +25,16 @@ export class OrdersService {
             }
         })
 
-        matchingOrder.amountLeftToFill = order.amountLeftToFill
-        matchingOrder.isCancelled = order.amountLeftToFill == matchingOrder.amountA ? true : false
+        matchingOrder.isCanceled = order.amountLeftToFill == matchingOrder.amountA ? true : false
 
         return this.orderRepository.save(matchingOrder)
     }
 
     async cancel(orderId: string){
-        return this.orderRepository.update(orderId, {
-            isCancelled: true
+        return this.orderRepository.update({
+            orderId: orderId
+        }, {
+            isCanceled: true
         })
     }
 }

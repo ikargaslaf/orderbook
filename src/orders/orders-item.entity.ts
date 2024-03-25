@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Order {
+export class OrderItem {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column()
+  @Column("text")
   orderId?: string;
 
   @Column()
@@ -15,12 +15,6 @@ export class Order {
   amountB: string
 
   @Column()
-  amountLeftToFill: string
-
-  @Column()
-  fees: string
-  
-  @Column()
   tokenA: string
 
   @Column()
@@ -29,7 +23,16 @@ export class Order {
   @Column()
   user: string
 
-  @Column()
-  isCancelled: boolean
+  @Column({
+    nullable: true,
+    default: false
+  })
+  isMarket: boolean
+
+  @Column({
+    nullable: true,
+    default: false
+  })
+  isCanceled: boolean
 
 }

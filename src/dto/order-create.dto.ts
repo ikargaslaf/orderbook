@@ -12,12 +12,6 @@ export class OrderCreateDto {
     amountB: string
 
     @IsNotEmpty()
-    amountLeftToFill: string
-
-    @IsNotEmpty()
-    fees: string
-
-    @IsNotEmpty()
     @IsEthereumAddress()
     tokenA: string
 
@@ -29,5 +23,7 @@ export class OrderCreateDto {
     @IsEthereumAddress()
     user: string
     
-    isCancelled: boolean
+    isMarket?: boolean
+
+    isCanceled?: boolean
 }

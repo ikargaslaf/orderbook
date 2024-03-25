@@ -1,4 +1,4 @@
-[
+export const OrderControllerAbi = [
     {
         "inputs": [
             {
