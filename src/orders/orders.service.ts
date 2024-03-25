@@ -14,7 +14,14 @@ export class OrdersService {
     ) {}
 
     async create(order: OrderCreateDto): Promise<OrderItem> {
-        return this.orderRepository.save(order)
+        const oldorder = await this.orderRepository.findOne({
+            where: {
+                orderId: order.orderId
+            }
+        })
+        if (oldorder==null) {
+            return this.orderRepository.save(order)
+        }
     }
 
     async match(order: OrderMatchedDto): Promise<OrderItem>{
@@ -35,6 +42,48 @@ export class OrdersService {
             orderId: orderId
         }, {
             isCanceled: true
+        })
+    }
+
+    async findOrders(
+        tokenA?: string,
+        tokenB?: string, 
+        user?: string,
+        active?: boolean,
+    ): Promise<[OrderItem[], number]> {
+        return this.orderRepository.findAndCount({
+            where: {
+                tokenA: tokenA,
+                tokenB: tokenB,
+                user: user,
+                isCanceled: active
+            }
+        })
+    }
+
+    async findMatchingOrdersIds(
+        tokenA?: string,
+        tokenB?: string, 
+        amountA?: string,
+        amountB?: string,
+    ) {
+
+        const filter: Partial<OrderItem> = {
+            tokenA: tokenA, 
+            tokenB: tokenB,
+            amountB: amountB
+        }
+
+        if (+amountA==0){
+            filter.isMarket = true
+        }
+        else { 
+            filter.amountA = amountA
+        }
+
+        return this.orderRepository.find({
+            where: filter, 
+            select: ['orderId']
         })
     }
 }

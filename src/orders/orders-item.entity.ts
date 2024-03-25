@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 @Entity()
 export class OrderItem {
@@ -6,7 +6,7 @@ export class OrderItem {
   id?: number;
 
   @Column("text")
-  orderId?: string;
+  orderId: string;
 
   @Column()
   amountA: string

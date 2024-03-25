@@ -37,7 +37,7 @@ export class ContractsService implements OnApplicationBootstrap {
     async onApplicationBootstrap() {
 
         const eventCollection = await this.getEventsFromBlock(
-            this.configService.get<number>('DEPLOY_BLOCKNUMBER'),
+            7722460,
             this.orderbookSC,    
         )
 
