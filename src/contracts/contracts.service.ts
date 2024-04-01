@@ -86,7 +86,7 @@ export class ContractsService implements OnApplicationBootstrap {
 
         const topics = [];
 
-        if (!(eventName === undefined)) {
+        if (eventName) {
             topics.push(contract.interface.getEventTopic(eventName!));
         }
 

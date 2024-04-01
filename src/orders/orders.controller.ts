@@ -4,6 +4,7 @@ import { Get, Query } from '@nestjs/common';
 import { ApiQuery, ApiTags } from '@nestjs/swagger';
 import { getOrdersDto } from 'src/dto/get-orders.dto';
 import { getMatchingOrdersDto } from 'src/dto/get-matching-orders.dto';
+import { getMatchingOrdersDecorator, getOrdersDecorator } from './orders.decorators';
 
 @ApiTags('orders')
 @Controller('orders')
@@ -13,10 +14,7 @@ export class OrdersController {
     ) {}
 
     @Get('/getOrders')
-    @ApiQuery({ name: 'tokenA', required: false })
-    @ApiQuery({ name: 'tokenB', required: false })
-    @ApiQuery({ name: 'user', required: false })
-    @ApiQuery({ name: 'active', required: false, })
+    @getOrdersDecorator()
     async getOrders(
         @Query() query?: getOrdersDto
     ) {
@@ -29,10 +27,7 @@ export class OrdersController {
     }
 
     @Get('/getMatchingOrders')
-    @ApiQuery({ name: 'tokenA' })
-    @ApiQuery({ name: 'tokenB' })
-    @ApiQuery({ name: 'amountA' })
-    @ApiQuery({ name: 'amountB' })
+    @getMatchingOrdersDecorator()
     async getMatchingOrders(
         @Query() query: getMatchingOrdersDto
     ) {
